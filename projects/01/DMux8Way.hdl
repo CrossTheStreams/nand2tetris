@@ -1,0 +1,60 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/01/DMux8Way.hdl
+
+/**
+ * 8-way demultiplexor:
+ * {a, b, c, d, e, f, g, h} = {in, 0, 0, 0, 0, 0, 0, 0} if sel == 000
+ *                            {0, in, 0, 0, 0, 0, 0, 0} if sel == 001
+ *                            etc.
+ *                            {0, 0, 0, 0, 0, 0, 0, in} if sel == 111
+
+ *       a if sel == 000 **
+ *       b if sel == 001 **
+         c if sel == 010  **
+         d if sel == 011 **
+         e if sel == 100 **
+         f if sel == 101 **
+         g if sel == 110 **
+         h if sel == 111 **
+ */
+
+CHIP DMux8Way {
+    IN in, sel[3];
+    OUT a, b, c, d, e, f, g, h;
+
+    PARTS:
+
+    Nand(a=sel[0], b=sel[1], out=aore);
+    Xor(a=sel[2], b=aore, out=yesa);
+    And(a=yesa, b=in, out=a);
+
+    Nand(a=sel[1], b=sel[2], out=aorb);
+    And(a=sel[0], b=sel[0], out=yesb);
+    And(a=yesb, b=in, out=b);
+
+    And(a=sel[0], b=sel[1], out=dorh);
+    Xor(a=sel[2], b=dorh, out=yesd);
+    And(a=yesd, b=in, out=d);
+
+    And(a=sel[2], b=aore, out=yese);
+    And(a=yese, b=in, out=e);
+
+    And(a=sel[2], b=dorh, out=yesh);
+    And(a=yesh, b=in, out=h);
+
+    And(a=sel[1], b=sel[2], out=gorh);
+    Xor(a=yesh, b=gorh, out=yesg);
+    And(a=yesg, b=in, out=g);
+
+    And(a=sel[0], b=sel[2], out=forh);
+    Xor(a=yesh, b=forh, out=yesf);
+    And(a=yesf, b=in, out=f);
+
+    Nand(a=sel[0], b=sel[2], out=aorc);
+    And(a=aorc, b=sel[1], out=yesc);
+    And(a=yesc, b=in, out=c);
+
+
+}
