@@ -26,35 +26,43 @@ CHIP DMux8Way {
 
     PARTS:
 
-    Nand(a=sel[0], b=sel[1], out=aore);
-    Xor(a=sel[2], b=aore, out=yesa);
-    And(a=yesa, b=in, out=a);
+    Not(in=sel[2], out=zeroa2);
+    Not(in=sel[1], out=zeroa1);
+    Not(in=sel[0], out=zeroa0);
+    And(a=zeroa0, b=zeroa1, out=zerosa01);
+    And(a=zerosa01, b=zeroa2, out=allazeros);
+    And(a=allazeros, b=in, out=a);
 
-    Nand(a=sel[1], b=sel[2], out=aorb);
-    And(a=sel[0], b=sel[0], out=yesb);
+    Not(in=sel[2], out=zerob2);
+    Not(in=sel[1], out=zerob1);
+    And(a=zerob2, b=zerob1, out=zerosb21);
+    And(a=zerosb21, b=sel[0], out=yesb);
     And(a=yesb, b=in, out=b);
 
-    And(a=sel[0], b=sel[1], out=dorh);
-    Xor(a=sel[2], b=dorh, out=yesd);
+    Not(in=sel[2], out=zeroc2);
+    Not(in=sel[0], out=zeroc0);
+    And(a=zeroc2, b=zeroc0, out=zerosc20);
+    And(a=zerosc20, b=sel[1], out=yesc);
+    And(a=yesc, b=in, out=c);
+
+    And(a=sel[0], b=sel[1], out=yes01);
+    Not(in=sel[2], out=not2);
+    And(a=yes01, b=not2, out=yesd);
     And(a=yesd, b=in, out=d);
 
-    And(a=sel[2], b=aore, out=yese);
+    And(a=sel[2], b=zerosa01, out=yese);
     And(a=yese, b=in, out=e);
 
-    And(a=sel[2], b=dorh, out=yesh);
-    And(a=yesh, b=in, out=h);
+    And(a=sel[2], b=sel[1], out=yes21);
+    And(a=sel[0], b=yes21, out=allyes);
+    And(a=allyes, b=in, out=h);
 
     And(a=sel[1], b=sel[2], out=gorh);
-    Xor(a=yesh, b=gorh, out=yesg);
+    Xor(a=allyes, b=gorh, out=yesg);
     And(a=yesg, b=in, out=g);
 
     And(a=sel[0], b=sel[2], out=forh);
-    Xor(a=yesh, b=forh, out=yesf);
+    Xor(a=allyes, b=forh, out=yesf);
     And(a=yesf, b=in, out=f);
-
-    Nand(a=sel[0], b=sel[2], out=aorc);
-    And(a=aorc, b=sel[1], out=yesc);
-    And(a=yesc, b=in, out=c);
-
 
 }
