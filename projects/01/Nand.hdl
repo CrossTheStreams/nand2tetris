@@ -1,0 +1,12 @@
+/*
+  Exclusive-and gate
+  If a=b=1 then out=0 else out=1
+*/
+
+CHIP Nand {
+    IN a, b;
+    OUT out;
+    PARTS:
+    And(a=a,b=b,out=w1);
+    Not(in=w1,out=out);
+}
