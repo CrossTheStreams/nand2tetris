@@ -110,12 +110,6 @@ CHIP ALU {
     Or(a=zreleven, b=zrtwelve, out=maybeonlyzerossix);
     Not(in=maybeonlyzerossix, out=onlyzerosix);
 
-    // Nand(a=zrthree, b=zrfour, out=onlyzerostwo);
-    // Nand(a=zrfive, b=zrsix, out=onlyzerosthree);
-    // Nand(a=zrseven, b=zreight, out=onlyzerosfour);
-    // Nand(a=zrnine, b=zrten, out=onlyzerosfive);
-    // Nand(a=zreleven, b=zrtwelve, out=onlyzerosix);
-
     And(a=onlyzerosone, b=onlyzerostwo, out=yayzerosone);
     And(a=onlyzerosthree, b=onlyzerosfour, out=yayzerostwo);
     And(a=onlyzerosfive, b=onlyzerosix, out=yayzerosthree);
