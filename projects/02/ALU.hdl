@@ -42,5 +42,84 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+
+    Not16(in=x, out=notx);
+    Or16(a=x, b=notx, out=allones);
+    Not16(in=allones, out=allzeros);
+
+    //zx
+    Mux16(a=x, b=allzeros, sel=zx, out=maybezeroedx);
+
+    //nx
+    Not16(in=maybezeroedx, out=negatedx);
+    Mux16(a=maybezeroedx, b=negatedx, sel=nx, out=maybenegatedx);
+
+    //zy
+    Mux16(a=y, b=allzeros, sel=zy, out=maybezeroedy);
+
+    //ny
+    Not16(in=maybezeroedy, out=negatedy);
+    Mux16(a=maybezeroedy, b=negatedy, sel=ny, out=maybenegatedy);
+
+    // f
+    Add16(a=maybenegatedx, b=maybenegatedy, out=xplusy);
+    And16(a=maybenegatedx, b=maybenegatedy, out=xandy);
+    Mux16(a=xandy, b=xplusy, sel=f, out=fout);
+
+    //no
+    Not16(in=fout, out=notfout);
+    Mux16(
+      a=fout,
+      b=notfout,
+      sel=no,
+      // ng
+      out[11]=ng[0],
+
+      out[0]=zrone,
+      out[1]=zrtwo,
+      out[2]=zrthree,
+      out[3]=zrfour,
+      out[4]=zrfive,
+      out[5]=zrsix,
+      out[6]=zrseven,
+      out[7]=zreight,
+      out[8]=zrnine,
+      out[9]=zrten,
+      out[10]=zreleven,
+      out[11]=zrtwelve,
+
+      out=out
+    );
+
+
+    Or(a=zrone, b=zrtwo, out=maybeonlyzerosone);
+    Not(in=maybeonlyzerosone, out=onlyzerosone);
+
+    Or(a=zrthree, b=zrfour, out=maybeonlyzerostwo);
+    Not(in=maybeonlyzerostwo, out=onlyzerostwo);
+
+    Or(a=zrfive, b=zrsix, out=maybeonlyzerosthree);
+    Not(in=maybeonlyzerosthree, out=onlyzerosthree);
+
+    Or(a=zrseven, b=zreight, out=maybeonlyzerosfour);
+    Not(in=maybeonlyzerosfour, out=onlyzerosfour); 
+
+    Or(a=zrnine, b=zrten, out=maybeonlyzerosfive);
+    Not(in=maybeonlyzerosfive, out=onlyzerosfive); 
+
+    Or(a=zreleven, b=zrtwelve, out=maybeonlyzerossix);
+    Not(in=maybeonlyzerossix, out=onlyzerosix);
+
+    // Nand(a=zrthree, b=zrfour, out=onlyzerostwo);
+    // Nand(a=zrfive, b=zrsix, out=onlyzerosthree);
+    // Nand(a=zrseven, b=zreight, out=onlyzerosfour);
+    // Nand(a=zrnine, b=zrten, out=onlyzerosfive);
+    // Nand(a=zreleven, b=zrtwelve, out=onlyzerosix);
+
+    And(a=onlyzerosone, b=onlyzerostwo, out=yayzerosone);
+    And(a=onlyzerosthree, b=onlyzerosfour, out=yayzerostwo);
+    And(a=onlyzerosfive, b=onlyzerosix, out=yayzerosthree);
+
+    And(a=yayzerosone, b=yayzerostwo, out=omgzeros);
+    And(a=omgzeros, b=yayzerosthree, out=zr);
 }
