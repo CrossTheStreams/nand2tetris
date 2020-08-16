@@ -16,5 +16,20 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+
+    // increment?
+    Inc16(in=lastout, out=incremented);
+    Mux16(a=lastout, b=incremented, sel=inc, out=maybeincremented);
+
+    // If we're loading, don't increment
+    Mux16(a=maybeincremented,b=in,sel=load,out=muxout);
+
+    // reset all to zero?
+    Not16(in=in, out=notin);
+    Or16(a=in, b=notin, out=allones);
+    Not16(in=allones, out=allzeros);
+    Mux16(a=muxout, b=allzeros, sel=reset, out=maybeallzeros);
+
+    // Store value in register and return output
+    Register(in=maybeallzeros, load=true, out=out, out=lastout);
 }
