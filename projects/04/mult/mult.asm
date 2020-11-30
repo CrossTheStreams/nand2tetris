@@ -12,8 +12,8 @@ M=0    // Set R2 to 0
 (LOOP)
 @R1
 D=M    // D=R1
-@END   
-D;JLE  // If R1 <= 0, goto END
+@END
+D;JEQ  // If R1 = 0, goto END
 @R0
 D=M    // D=R0
 @R2
