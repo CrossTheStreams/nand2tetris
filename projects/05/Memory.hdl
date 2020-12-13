@@ -64,5 +64,4 @@ CHIP Memory {
         out=out
     );
 
-
 }
